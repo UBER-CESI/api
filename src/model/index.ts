@@ -6,6 +6,7 @@ import mongoose, {
   Number,
   Types,
 } from "mongoose";
+import { IMenu, IItem } from "./menu"
 
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
@@ -14,28 +15,21 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
-export interface IItem {
-  _id?: ObjectId;
-  name: String;
-  description: String;
-  allergens: Array<String>;
-  subItems: Array<String>;
-  restaurantId: String;
-}
 
 export interface IOrder {
   _id?: ObjectId;
   restaurantId: Types.ObjectId;
   customerId: Types.ObjectId;
-  delivererId: String;
+  delivererId: Types.ObjectId;
   totalPrice: Number;
-  items: Array<IItem>;
+  tipAmount: Number;
+  items: Array<IItem | IMenu>;
 }
 
 const ordersSchema = new Schema<IOrder>({
-  restaurantId: {type:Schema.Types.ObjectId, ref:"Restaurant"},
-  customerId: {type:Schema.Types.ObjectId, ref:"Customer"},
-  delivererId: String,
+  restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
+  customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
+  delivererId: { type: Schema.Types.ObjectId, ref: "Deliverer" },
   totalPrice: Number,
   items: Array<IItem>
 });
