@@ -4,6 +4,8 @@ import { expect } from "chai";
 import "mocha";
 
 describe("Test Restaurants routes", () => {
+  const listen_address =
+    process.env.LISTEN_ADDRESS + ":" + process.env.LISTEN_PORT;
   var restaurantId: number;
   var restaurant = {
     name: "mochaResto",
@@ -14,12 +16,7 @@ describe("Test Restaurants routes", () => {
   it("Register a restaurant", () => {
     var config = {
       method: "put",
-      url:
-        "http://" +
-        process.env.listen_address +
-        ":" +
-        process.env.listen_port +
-        "/register",
+      url: "http://" + listen_address + "/register",
       headers: {
         "Content-Type": "application/json",
       },
@@ -34,13 +31,7 @@ describe("Test Restaurants routes", () => {
   it("Get the restaurant", () => {
     var config = {
       method: "get",
-      url:
-        "http://" +
-        process.env.listen_address +
-        ":" +
-        process.env.listen_port +
-        "/" +
-        restaurantId,
+      url: "http://" + listen_address + "/" + restaurantId,
       headers: {},
     };
 
@@ -55,13 +46,7 @@ describe("Test Restaurants routes", () => {
     restaurant.email = "mocha2@test.fr";
     var config = {
       method: "post",
-      url:
-        "http://" +
-        process.env.listen_address +
-        ":" +
-        process.env.listen_port +
-        "/" +
-        restaurantId,
+      url: "http://" + listen_address + "/" + restaurantId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -78,13 +63,7 @@ describe("Test Restaurants routes", () => {
   it("Get the edited restaurant", () => {
     var config = {
       method: "get",
-      url:
-        "http://" +
-        process.env.listen_address +
-        ":" +
-        process.env.listen_port +
-        "/" +
-        restaurantId,
+      url: "http://" + listen_address + "/" + restaurantId,
       headers: {},
     };
 
@@ -98,13 +77,7 @@ describe("Test Restaurants routes", () => {
   it("Delete the registered restaurant", () => {
     var config = {
       method: "delete",
-      url:
-        "http://" +
-        process.env.listen_address +
-        ":" +
-        process.env.listen_port +
-        "/" +
-        restaurantId,
+      url: "http://" + listen_address + "/" + restaurantId,
       headers: {},
     };
 
@@ -119,13 +92,7 @@ describe("Test Restaurants routes", () => {
   it("Check that restaurant is deleted", () => {
     var config = {
       method: "get",
-      url:
-        "http://" +
-        process.env.listen_address +
-        ":" +
-        process.env.listen_port +
-        "/" +
-        restaurantId,
+      url: "http://" + listen_address + "/" + restaurantId,
       headers: {},
     };
 
