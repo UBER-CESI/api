@@ -4,6 +4,7 @@ import mongoose, {
   model,
   ObjectId,
   Number,
+  Types,
 } from "mongoose";
 
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
@@ -24,16 +25,16 @@ export interface IItem {
 
 export interface IOrder {
   _id?: ObjectId;
-  restaurantId: String;
-  customerId: String;
+  restaurantId: Types.ObjectId;
+  customerId: Types.ObjectId;
   delivererId: String;
   totalPrice: Number;
   items: Array<IItem>;
 }
 
-const restaurantsSchema = new Schema<IOrder>({
-  restaurantId: String,
-  customerId: String,
+const ordersSchema = new Schema<IOrder>({
+  restaurantId: {type:Schema.Types.ObjectId, ref:"Restaurant"},
+  customerId: {type:Schema.Types.ObjectId, ref:"Customer"},
   delivererId: String,
   totalPrice: Number,
   items: Array<IItem>
@@ -46,7 +47,7 @@ const itemsSchema = new Schema<IItem>({
   subItems: Array<String>
 });
 
-export const Order = model<IOrder>("Order", restaurantsSchema);
+export const Order = model<IOrder>("Order", ordersSchema);
 export const Item = model<IItem>("Item", itemsSchema);
 
 mongoose.connection.on("error", () => {
