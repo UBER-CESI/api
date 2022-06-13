@@ -38,6 +38,22 @@ describe("Test Customer routes", () => {
     });
   });*/
 
+  it("Create a Restaurant and a customer", () => {
+    var config = {
+      method: "put",
+      url: "http://" + listen_address + "/register",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(user),
+    };
+
+    return axios(config).then(function (response) {
+      expect(response.status).to.equal(201);
+      userId = response.data._id;
+    });
+  });
+
   after(() => {
     routes.stop();
   });
