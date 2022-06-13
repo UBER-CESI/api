@@ -46,6 +46,7 @@ const restaurantsSchema = new Schema<IRestaurant>({
 });
 
 export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
+export const Menu = model<IMenu>("Menu", menusSchema);
 export const Item = model<IItem>("Item", itemsSchema);
 
 mongoose.connection.on("error", () => {
