@@ -22,7 +22,7 @@ describe("Test Customer routes", () => {
     email: "mochaResto@restaurant.com",
   };
   var orderId: Number;
-  it("Create a Restaurant and a customer", () => {
+  /*it("Create a Restaurant and a customer", () => {
     var config = {
       method: "put",
       url: "http://" + listen_address + "/register",
@@ -36,7 +36,8 @@ describe("Test Customer routes", () => {
       expect(response.status).to.equal(201);
       userId = response.data._id;
     });
-  });
+  });*/
+
   after(() => {
     routes.stop();
   });

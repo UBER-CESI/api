@@ -31,18 +31,10 @@ const ordersSchema = new Schema<IOrder>({
   customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
   delivererId: { type: Schema.Types.ObjectId, ref: "Deliverer" },
   totalPrice: Number,
-  items: Array<IItem>
-});
-
-const itemsSchema = new Schema<IItem>({
-  restaurantId: String,
-  description: String,
-  allergens: Array<String>,
-  subItems: Array<String>
-});
+  items: Array<IItem | IMenu>
+})
 
 export const Order = model<IOrder>("Order", ordersSchema);
-export const Item = model<IItem>("Item", itemsSchema);
 
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
