@@ -1,8 +1,9 @@
 import axios from "axios";
 import { expect } from "chai";
-import { IItem } from "../src/model/menu";
-import "mocha";
+import { IMenu } from "../src/model/menu";
 import { Types } from "mongoose";
+import "mocha";
+
 export default function suite() {
   const listen_address =
     process.env.LISTEN_ADDRESS + ":" + process.env.LISTEN_PORT;
@@ -13,8 +14,8 @@ export default function suite() {
     phoneNumber: "0666666666",
     email: "mochaResto@restaurant.com",
   };
-  var sampleMenuItem: IItem;
-  var itemId: Types.ObjectId;
+  var sampleMenu: IMenu;
+  var menuId: String;
   before(() => {
     var config = {
       method: "put",
@@ -28,86 +29,87 @@ export default function suite() {
     return axios(config).then(function (response) {
       expect(response.status).to.equal(201);
       restaurantId = new Types.ObjectId(response.data._id);
-      sampleMenuItem = {
+      sampleMenu = {
         name: "steak",
         description: "Oui blablabla",
-        allergens: ["vegan"],
+        items: ["item01"],
+        price: 8,
         restaurantId,
       };
     });
   });
-  it("Create an Item", function () {
+  it("Create a Menu", function () {
     var config = {
       method: "put",
-      url: "http://" + listen_address + "/" + restaurantId + "/item",
+      url: "http://" + listen_address + "/" + restaurantId + "/menu",
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify(sampleMenuItem),
+      data: JSON.stringify(sampleMenu),
     };
     return axios(config).then(function (response) {
       expect(response.status).to.equal(201);
-      itemId = response.data._id;
+      menuId = response.data._id;
     });
   });
-  it("Get the Item", function () {
+  it("Get the Menu", function () {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/" + restaurantId + "/menu/" + menuId,
     };
     return axios(config).then(function (response) {
-      expect(response.data.name).to.equal(sampleMenuItem.name);
-      expect(response.data.description).to.equal(sampleMenuItem.description);
-      expect(response.data.allergens).to.eql(sampleMenuItem.allergens);
+      expect(response.data.name).to.equal(sampleMenu.name);
+      expect(response.data.description).to.equal(sampleMenu.description);
+      expect(response.data.items).to.eql(sampleMenu.items);
       expect(response.data.restaurantId).to.equal(
-        sampleMenuItem.restaurantId.toString()
+        sampleMenu.restaurantId.toString()
       );
       expect(response.status).to.equal(200);
     });
   });
-  it("Edit the Item", function () {
-    sampleMenuItem.description = "blablabla but edited";
+  it("Edit the Menu", function () {
+    sampleMenu.description = "blablabla but edited";
     var config = {
       method: "post",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/" + restaurantId + "/menu/" + menuId,
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify(sampleMenuItem),
+      data: JSON.stringify(sampleMenu),
     };
     return axios(config).then(function (response) {
       expect(response.status).to.equal(200);
-      itemId = response.data._id;
+      menuId = response.data._id;
     });
   });
-  it("Check that Item is edited", function () {
+  it("Check that Menu is edited", function () {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/" + restaurantId + "/menu/" + menuId,
     };
     return axios(config).then(function (response) {
-      expect(response.data.name).to.equal(sampleMenuItem.name);
-      expect(response.data.description).to.equal(sampleMenuItem.description);
-      expect(response.data.allergens).to.eql(sampleMenuItem.allergens);
+      expect(response.data.name).to.equal(sampleMenu.name);
+      expect(response.data.description).to.equal(sampleMenu.description);
+      expect(response.data.items).to.eql(sampleMenu.items);
       expect(response.data.restaurantId).to.equal(
-        sampleMenuItem.restaurantId.toString()
+        sampleMenu.restaurantId.toString()
       );
       expect(response.status).to.equal(200);
     });
   });
-  it("Delete the Item", function () {
+  it("Delete the Menu", function () {
     var config = {
       method: "delete",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/" + restaurantId + "/menu/" + menuId,
     };
     return axios(config).then(function (response) {
       expect(response.status).to.equal(200);
     });
   });
-  it("Check that item is deleted", () => {
+  it("Check that menu is deleted", () => {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/" + restaurantId + "/menu/" + menuId,
       headers: {},
     };
 

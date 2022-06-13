@@ -3,11 +3,13 @@ import axios from "axios";
 import { expect } from "chai";
 import "mocha";
 import item from "./item.test";
+import menu from "./menu.test";
+import { Types } from "mongoose";
 
 describe("Test Restaurants routes", () => {
   const listen_address =
     process.env.LISTEN_ADDRESS + ":" + process.env.LISTEN_PORT;
-  var restaurantId: number;
+  var restaurantId: Types.ObjectId;
   var restaurant = {
     name: "mochaResto",
     address: "32 rue truc 33300 Bordeaux",
@@ -105,7 +107,8 @@ describe("Test Restaurants routes", () => {
         expect(error.response.status).to.equal(404);
       });
   });
-  describe("Test menus", item.bind(this));
+  describe("Test Items", item.bind(this));
+  describe("Test Menus", menu.bind(this));
   after(() => {
     routes.stop();
   });
