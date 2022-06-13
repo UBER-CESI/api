@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { init, Restaurant } from "model";
-const listen_port = process.env.listen_port;
+const listen_port = process.env.LISTEN_PORT;
 const router = Router();
 
 function isHex(num: string): boolean {
