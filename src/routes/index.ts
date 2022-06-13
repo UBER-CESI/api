@@ -7,12 +7,10 @@ const router = Router();
 function isHex(num: string): boolean {
   return Boolean(num.match(/^0x[0-9a-f]+$/i));
 }
-
-const app = express();
-
+console.log("hey");
 router.put("/", async (req, res) => {
   const order = new Order(req.body);
-  await order.save();
+  await order.save().catch((e) => res.status(404));
   return res.status(201).send(order);
 });
 
@@ -52,6 +50,8 @@ router.post("/:id/suspend", async (req, res) => {
   await order.save();
   return res.send(order);
 });
+
+const app = express();
 
 app.use(express.json());
 app.use("/", router);

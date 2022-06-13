@@ -9,7 +9,7 @@ describe("Test Order routes", () => {
   var orderId: Number;
   var order = {
     restaurantId: "acab",
-    orderId: "acab2",
+    customerId: "acab2",
     delivererId: "acab3",
     totalPrice: 25,
     items: [{ id: "acab5" }],
@@ -39,7 +39,7 @@ describe("Test Order routes", () => {
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
       expect(response.data.items).to.eql(order.items);
-      expect(response.data.orderId).to.equal(order.orderId);
+      expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
       expect(response.status).to.equal(200);
@@ -59,7 +59,7 @@ describe("Test Order routes", () => {
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
       expect(response.data.items).to.eql(order.items);
-      expect(response.data.orderId).to.equal(order.orderId);
+      expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
       expect(response.status).to.equal(200);
@@ -75,7 +75,7 @@ describe("Test Order routes", () => {
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
       expect(response.data.items).to.eql(order.items);
-      expect(response.data.orderId).to.equal(order.orderId);
+      expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
       expect(response.status).to.equal(200);
@@ -91,7 +91,7 @@ describe("Test Order routes", () => {
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
       expect(response.data.items).to.eql(order.items);
-      expect(response.data.orderId).to.equal(order.orderId);
+      expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
       expect(response.status).to.equal(200);
