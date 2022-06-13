@@ -13,6 +13,23 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
+export interface IRestaurant {
+  _id?: ObjectId;
+  userId: Number;
+  email: string;
+  name: String;
+  phoneNumber: string;
+}
+
+const restaurantsSchema = new Schema<IRestaurant>({
+  userId: Number,
+  email: String,
+  name: String,
+  phoneNumber: String,
+});
+
+export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
+
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
