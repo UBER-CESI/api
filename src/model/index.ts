@@ -13,6 +13,15 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
+export interface IItem {
+  _id?: ObjectId;
+  name: String;
+  description: String;
+  allergens: Array<String>;
+  subItems?: Array<String>;
+  restaurantId: String;
+}
+
 export interface IRestaurant {
   _id?: ObjectId;
   userId: Number;
@@ -20,6 +29,14 @@ export interface IRestaurant {
   name: String;
   phoneNumber: string;
 }
+
+const itemsSchema = new Schema<IItem>({
+  name: String,
+  description: String,
+  allergens: Array<String>,
+  subItems: Array<String>,
+  restaurantId: String,
+});
 
 const restaurantsSchema = new Schema<IRestaurant>({
   userId: Number,
@@ -29,6 +46,7 @@ const restaurantsSchema = new Schema<IRestaurant>({
 });
 
 export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
+export const Item = model<IItem>("Item", itemsSchema);
 
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");

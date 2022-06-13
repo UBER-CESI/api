@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { init, Restaurant } from "model";
+import items from "./items";
 const listen_port = process.env.LISTEN_PORT;
 const router = Router();
 
@@ -24,6 +25,8 @@ router.use("/:id/*", (req, res, next) => {
   if (req.body._id) return res.sendStatus(400);
   next();
 });
+
+router.use("/:id/item", items);
 
 router.get("/:id", async (req, res) => {
   const restaurant = await Restaurant.findOne({ _id: req.params.id });
