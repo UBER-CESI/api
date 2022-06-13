@@ -5,7 +5,7 @@ import mongoose, {
   ObjectId,
   Number,
 } from "mongoose";
-
+import {IMenu, IItem, IItemOption} from "./menu"
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
@@ -13,14 +13,6 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
-export interface IItem {
-  _id?: ObjectId;
-  name: String;
-  description: String;
-  allergens: Array<String>;
-  subItems?: Array<String>;
-  restaurantId: String;
-}
 
 export interface IRestaurant {
   _id?: ObjectId;
@@ -34,8 +26,16 @@ const itemsSchema = new Schema<IItem>({
   name: String,
   description: String,
   allergens: Array<String>,
-  subItems: Array<String>,
-  restaurantId: String,
+  options: Array<IItemOption>,
+  restaurantId: {type:Schema.Types.ObjectId, ref:"Restaurant"},
+});
+
+const menusSchema = new Schema<IMenu>({
+  name: String,
+  description: String,
+  items: Array<Schema.Types.ObjectId>,
+  price:Number,
+  restaurantId: {type:Schema.Types.ObjectId, ref:"Restaurant"},
 });
 
 const restaurantsSchema = new Schema<IRestaurant>({
