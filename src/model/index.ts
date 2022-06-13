@@ -13,6 +13,29 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
+export interface ICustomer {
+  _id?: ObjectId;
+  userId: Number;
+  email: string;
+  nickname: string;
+  firstname: string;
+  lastname: string;
+  phoneNumber: string;
+  suspendedAt?: Date;
+}
+
+const usersSchema = new Schema<ICustomer>({
+  userId: Number,
+  email: String,
+  nickname: String,
+  firstname: String,
+  lastname: String,
+  phoneNumber: String,
+  suspendedAt: Date,
+});
+
+export const Customer = model<ICustomer>("Customer", usersSchema);
+
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
