@@ -2,6 +2,7 @@ import routes from "../src/routes";
 import axios from "axios";
 import { expect } from "chai";
 import "mocha";
+import menus from "./menus.test";
 
 describe("Test Restaurants routes", () => {
   const listen_address =
@@ -104,6 +105,7 @@ describe("Test Restaurants routes", () => {
         expect(error.response.status).to.equal(404);
       });
   });
+  describe("Test menus", menus.bind(this));
   after(() => {
     routes.stop();
   });
