@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const listen_port = process.env.LISTEN_PORT;
 const router = Router();
 const app = express();
+app.use(express.json());
 function isHex(num: string): boolean {
   return Boolean(num.match(/^0x[0-9a-f]+$/i));
 }
@@ -76,8 +77,6 @@ models.forEach(({ model, capabilities, path }) => {
   });
   app.use(path, router2);
 });
-
-app.use(express.json());
 
 const server = app.listen(listen_port, () => {
   console.log(`App listening on port ${listen_port}`);
