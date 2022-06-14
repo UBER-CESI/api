@@ -13,7 +13,7 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
-export interface ICustomer {
+interface ICustomer {
   _id?: ObjectId;
   userId: Number;
   email: string;
@@ -34,8 +34,15 @@ const usersSchema = new Schema<ICustomer>({
   suspendedAt: Date,
 });
 
-export const Customer = model<ICustomer>("Customer", usersSchema);
+const Customer = model<ICustomer>("Customer", usersSchema);
 
+export const models: { model: mongoose.Model<any>; capabilities: string[] }[] =
+  [
+    {
+      model: Customer,
+      capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
+    },
+  ];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
