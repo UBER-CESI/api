@@ -5,7 +5,7 @@ import mongoose, {
   ObjectId,
   Number,
 } from "mongoose";
-import {IMenu, IItem, IItemOption} from "./menu"
+import { IMenu, IItem, IItemOption } from "./menu"
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
@@ -27,15 +27,15 @@ const itemsSchema = new Schema<IItem>({
   description: String,
   allergens: Array<String>,
   options: Array<IItemOption>,
-  restaurantId: {type:Schema.Types.ObjectId, ref:"Restaurant"},
+  restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
 });
 
 const menusSchema = new Schema<IMenu>({
   name: String,
   description: String,
   items: Array<Schema.Types.ObjectId>,
-  price:Number,
-  restaurantId: {type:Schema.Types.ObjectId, ref:"Restaurant"},
+  price: Number,
+  restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
 });
 
 const restaurantsSchema = new Schema<IRestaurant>({
@@ -49,6 +49,8 @@ export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
 export const Menu = model<IMenu>("Menu", menusSchema);
 export const Item = model<IItem>("Item", itemsSchema);
 
+export const models: { model: mongoose.Model<any>; capabilities: string[] }[] =
+  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"] }];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
