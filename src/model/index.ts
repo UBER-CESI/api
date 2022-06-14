@@ -39,8 +39,8 @@ const ordersSchema = new Schema<IOrder>({
 
 export const Order = model<IOrder>("Order", ordersSchema);
 
-export const models: { model: mongoose.Model<any>; capabilities: string[] }[] =
-  [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"] }];
+export const models: { model: mongoose.Model<any>; capabilities: string[], path:string }[] =
+  [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"] , path:"/"}];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
