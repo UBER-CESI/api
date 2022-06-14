@@ -13,6 +13,7 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
+export const models = [{}];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
