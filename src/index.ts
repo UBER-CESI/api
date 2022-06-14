@@ -1,5 +1,8 @@
 import cluster from "node:cluster";
-
+import("routes").then((routes) => {
+  routes.default.spawn();
+});
+/*
 if (cluster.isPrimary) {
   import("node:os").then((os) => {
     const totalCPUs = os.cpus().length;
@@ -21,3 +24,4 @@ if (cluster.isPrimary) {
     routes.default.spawn();
   });
 }
+*/

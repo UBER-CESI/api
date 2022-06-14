@@ -8,6 +8,18 @@ function isHex(num: string): boolean {
   return Boolean(num.match(/^0x[0-9a-f]+$/i));
 }
 
+router.use("/:id", (req, res, next) => {
+  if (isHex(req.params.id)) return res.sendStatus(400);
+  if (req.body._id) return res.sendStatus(400);
+  next();
+});
+
+router.use("/:id/*", (req, res, next) => {
+  if (isHex(req.params.id)) return res.sendStatus(400);
+  if (req.body._id) return res.sendStatus(400);
+  next();
+});
+
 const autoRouter: { [key: string]: (model: mongoose.Model<any>) => void } = {
   CREATE: (model: mongoose.Model<any>) => {
     router.put("/", async (req, res) => {
@@ -59,18 +71,6 @@ models.forEach(({ model, capabilities }) => {
   capabilities.forEach((cap) => {
     autoRouter[cap]?.(model);
   });
-});
-
-router.use("/:id", (req, res, next) => {
-  if (isHex(req.params.id)) return res.sendStatus(400);
-  if (req.body._id) return res.sendStatus(400);
-  next();
-});
-
-router.use("/:id/*", (req, res, next) => {
-  if (isHex(req.params.id)) return res.sendStatus(400);
-  if (req.body._id) return res.sendStatus(400);
-  next();
 });
 
 const app = express();

@@ -17,7 +17,7 @@ describe("Test Customer routes", () => {
   it("Register a customer", () => {
     var config = {
       method: "put",
-      url: "http://" + listen_address + "/register",
+      url: "http://" + listen_address + "/",
       headers: {
         "Content-Type": "application/json",
       },
