@@ -13,7 +13,7 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
-interface ICustomer {
+interface IDeliverer {
   _id?: ObjectId;
   userId: Number;
   email: string;
@@ -24,7 +24,7 @@ interface ICustomer {
   suspendedAt?: Date;
 }
 
-const usersSchema = new Schema<ICustomer>({
+const usersSchema = new Schema<IDeliverer>({
   userId: Number,
   email: String,
   nickname: String,
@@ -34,12 +34,12 @@ const usersSchema = new Schema<ICustomer>({
   suspendedAt: Date,
 });
 
-const Customer = model<ICustomer>("Customer", usersSchema);
+const Deliverer = model<IDeliverer>("Deliverer", usersSchema);
 
 export const models: { model: mongoose.Model<any>; capabilities: string[] }[] =
   [
     {
-      model: Customer,
+      model: Deliverer,
       capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
     },
   ];
