@@ -36,13 +36,17 @@ const usersSchema = new Schema<IDeliverer>({
 
 const Deliverer = model<IDeliverer>("Deliverer", usersSchema);
 
-export const models: { model: mongoose.Model<any>; capabilities: string[] }[] =
-  [
-    {
-      model: Deliverer,
-      capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
-    },
-  ];
+export const models: {
+  model: mongoose.Model<any>;
+  capabilities: string[];
+  path: "/";
+}[] = [
+  {
+    model: Deliverer,
+    capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
+    path: "/",
+  },
+];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });

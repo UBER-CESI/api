@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "env-cmd nodemon --watch src -e js,ts,json --exec \"ts-node src/index.ts\"",
-    "test": "mocha -r ts-node/register tests/**/*.ts",
+    "test": "mocha -r ts-node/register tests/**/*.ts --timeout 5000",
     "test:dev": "env-cmd mocha -r ts-node/register tests/**/*.ts",
     "build": "tsc",
     "start": "node dist/index.js"
