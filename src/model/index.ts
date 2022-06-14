@@ -50,7 +50,9 @@ export const Menu = model<IMenu>("Menu", menusSchema);
 export const Item = model<IItem>("Item", itemsSchema);
 
 export const models: { model: mongoose.Model<any>; capabilities: string[], path: string }[] =
-  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/" }];
+  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/" },
+  { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/menu/" },
+  { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/item/" }];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });

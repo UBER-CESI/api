@@ -19,7 +19,7 @@ export default function suite() {
   before(() => {
     var config = {
       method: "put",
-      url: "http://" + listen_address + "/register",
+      url: "http://" + listen_address + "/",
       headers: {
         "Content-Type": "application/json",
       },
