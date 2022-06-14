@@ -30,15 +30,17 @@ const ordersSchema = new Schema<IOrder>({
   /*restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
   customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
   delivererId: { type: Schema.Types.ObjectId, ref: "Deliverer" },*/
-  restaurantId:String,
-  customerId:String,
-  delivererId:String,
+  restaurantId: String,
+  customerId: String,
+  delivererId: String,
   totalPrice: Number,
   items: Array<IItem | IMenu>
 })
 
 export const Order = model<IOrder>("Order", ordersSchema);
 
+export const models: { model: mongoose.Model<any>; capabilities: string[] }[] =
+  [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"] }];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
