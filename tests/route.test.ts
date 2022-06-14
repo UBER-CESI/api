@@ -3,7 +3,7 @@ import axios from "axios";
 import { expect } from "chai";
 import "mocha";
 
-describe("Test Customer routes", () => {
+describe("Test Deliverer routes", () => {
   const listen_address =
     process.env.LISTEN_ADDRESS + ":" + process.env.LISTEN_PORT;
   var userId: Number;
@@ -14,7 +14,7 @@ describe("Test Customer routes", () => {
     lastname: "yes",
     phoneNumber: "0666666666",
   };
-  it("Register a customer", () => {
+  it("Register a deliverer", () => {
     var config = {
       method: "put",
       url: "http://" + listen_address + "/",
@@ -29,7 +29,7 @@ describe("Test Customer routes", () => {
       userId = response.data._id;
     });
   });
-  it("Get the customer", () => {
+  it("Get the deliverer", () => {
     var config = {
       method: "get",
       url: "http://" + listen_address + "/" + userId,
@@ -45,7 +45,7 @@ describe("Test Customer routes", () => {
       expect(response.status).to.equal(200);
     });
   });
-  it("Edit the customer", () => {
+  it("Edit the deliverer", () => {
     user.email = "mocha2@test.fr";
     var config = {
       method: "post",
@@ -65,7 +65,7 @@ describe("Test Customer routes", () => {
       expect(response.status).to.equal(200);
     });
   });
-  it("Get the edited customer", () => {
+  it("Get the edited deliverer", () => {
     var config = {
       method: "get",
       url: "http://" + listen_address + "/" + userId,
@@ -81,7 +81,7 @@ describe("Test Customer routes", () => {
       expect(response.status).to.equal(200);
     });
   });
-  it("Delete the registered customer", () => {
+  it("Delete the registered deliverer", () => {
     var config = {
       method: "delete",
       url: "http://" + listen_address + "/" + userId,
@@ -98,7 +98,7 @@ describe("Test Customer routes", () => {
       expect(response.status).to.equal(200);
     });
   });
-  it("Check that customer is deleted", () => {
+  it("Check that deliverer is deleted", () => {
     var config = {
       method: "get",
       url: "http://" + listen_address + "/" + userId,
