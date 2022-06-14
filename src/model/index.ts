@@ -49,8 +49,8 @@ export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
 export const Menu = model<IMenu>("Menu", menusSchema);
 export const Item = model<IItem>("Item", itemsSchema);
 
-export const models: { model: mongoose.Model<any>; capabilities: string[], path:string }[] =
-  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path:"/" }];
+export const models: { model: mongoose.Model<any>; capabilities: string[], path: string }[] =
+  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/" }];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
