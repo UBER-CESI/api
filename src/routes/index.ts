@@ -1,9 +1,14 @@
 import express, { Router } from "express";
-import mongoose, { init } from "model";
+import { init, models } from "model";
+import mongoose from "mongoose";
 const listen_port = process.env.LISTEN_PORT;
 const router = Router();
 
-const autoRouter = {
+function isHex(num: string): boolean {
+  return Boolean(num.match(/^0x[0-9a-f]+$/i));
+}
+
+const autoRouter: { [key: string]: (model: mongoose.Model<any>) => void } = {
   CREATE: (model: mongoose.Model<any>) => {
     router.put("/", async (req, res) => {
       const single = new model(req.body);
@@ -39,7 +44,34 @@ const autoRouter = {
       return res.send(single);
     });
   },
+  SUSPEND: (model: mongoose.Model<any>) => {
+    router.post("/:id/suspend", async (req, res) => {
+      const single = await model.findOne({ _id: req.params.id });
+      if (!single) return res.sendStatus(404);
+      single.suspendedAt = new Date();
+      await single.save();
+      return res.send(single);
+    });
+  },
 };
+
+models.forEach(({ model, capabilities }) => {
+  capabilities.forEach((cap) => {
+    autoRouter[cap]?.(model);
+  });
+});
+
+router.use("/:id", (req, res, next) => {
+  if (isHex(req.params.id)) return res.sendStatus(400);
+  if (req.body._id) return res.sendStatus(400);
+  next();
+});
+
+router.use("/:id/*", (req, res, next) => {
+  if (isHex(req.params.id)) return res.sendStatus(400);
+  if (req.body._id) return res.sendStatus(400);
+  next();
+});
 
 const app = express();
 
