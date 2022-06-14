@@ -37,4 +37,4 @@ jobs:
       - name: Build javascript
         run: npm run build --if-present
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag api-customers:$(date +%s)
+        run: docker build . --file Dockerfile --tag api-orders:$(date +%s)
