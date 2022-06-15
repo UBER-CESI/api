@@ -51,7 +51,11 @@ const autoRouter: {
     _router.post("/:id/suspend", async (req, res) => {
       const single = await model.findOne({ _id: req.params.id });
       if (!single) return res.sendStatus(404);
-      single.suspendedAt = new Date();
+      if (req.body.suspend && !single.suspendedAt) {
+        single.suspendedAt = new Date();
+      } else if (!req.body.suspend) {
+        single.suspendedAt = undefined;
+      }
       await single.save();
       return res.send(single);
     });

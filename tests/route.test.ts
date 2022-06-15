@@ -1,6 +1,6 @@
 import routes from "../src/routes";
 import axios from "axios";
-import { expect } from "chai";
+import { expect, should } from "chai";
 import "mocha";
 
 describe("Test Customer routes", () => {
@@ -62,6 +62,55 @@ describe("Test Customer routes", () => {
       expect(response.data.firstname).to.equal(user.firstname);
       expect(response.data.lastname).to.equal(user.lastname);
       expect(response.data.phoneNumber).to.equal(user.phoneNumber);
+      expect(response.status).to.equal(200);
+    });
+  });
+  it("Get the edited customer", () => {
+    var config = {
+      method: "get",
+      url: "http://" + listen_address + "/" + userId,
+      headers: {},
+    };
+
+    return axios(config).then(function (response) {
+      expect(response.data.email).to.equal(user.email);
+      expect(response.data.nickname).to.equal(user.nickname);
+      expect(response.data.firstname).to.equal(user.firstname);
+      expect(response.data.lastname).to.equal(user.lastname);
+      expect(response.data.phoneNumber).to.equal(user.phoneNumber);
+      expect(response.status).to.equal(200);
+    });
+  });
+  it("Suspend the customer", () => {
+    user.email = "mocha2@test.fr";
+    var config = {
+      method: "post",
+      url: "http://" + listen_address + "/" + userId + "/suspend",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({ suspend: true }),
+    };
+
+    return axios(config).then(function (response) {
+      console.log(response.data);
+      should().exist(response.data.suspendedAt);
+      expect(response.status).to.equal(200);
+    });
+  });
+  it("Unsuspend the customer", () => {
+    user.email = "mocha2@test.fr";
+    var config = {
+      method: "post",
+      url: "http://" + listen_address + "/" + userId + "/suspend",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({ suspend: false }),
+    };
+
+    return axios(config).then(function (response) {
+      should().not.exist(response.data.suspendedAt);
       expect(response.status).to.equal(200);
     });
   });
