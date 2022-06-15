@@ -54,7 +54,8 @@ const ordersSchema = new Schema<IOrder>({
   customerId: String,
   delivererId: String,
   totalPrice: Number,
-  items: Array<any>
+  items: Array<any>,
+  date:Date
 })
 
 export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);

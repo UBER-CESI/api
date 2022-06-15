@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Date, Types } from "mongoose";
 export interface IMenu {
   _id?: Types.ObjectId;
   name: String;
@@ -36,4 +36,5 @@ export interface IOrder {
   totalPrice: Number;
   tipAmount: Number;
   items: Array<any>;
+  date: Date;
 }
