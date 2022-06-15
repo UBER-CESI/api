@@ -58,14 +58,6 @@ const autoRouter: {
   },
 };
 
-models.forEach(({ model, capabilities, path }) => {
-  const router2 = Router();
-  capabilities.forEach((cap) => {
-    autoRouter[cap]?.(model, router2);
-  });
-  app.use(path, router2);
-});
-
 router.use("/:id", (req, res, next) => {
   if (isHex(req.params.id)) return res.sendStatus(400);
   if (req.body?._id) return res.sendStatus(400);
@@ -78,7 +70,13 @@ router.use("/:id/*", (req, res, next) => {
   next();
 });
 
-console.log(`Worker ${process.pid} started`);
+models.forEach(({ model, capabilities, path }) => {
+  const router2 = Router();
+  capabilities.forEach((cap) => {
+    autoRouter[cap]?.(model, router2);
+  });
+  app.use(path, router2);
+});
 
 const server = app.listen(listen_port, () => {
   console.log(`App listening on port ${listen_port}`);
