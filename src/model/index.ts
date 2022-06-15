@@ -55,7 +55,7 @@ const ordersSchema = new Schema<IOrder>({
   delivererId: String,
   totalPrice: Number,
   items: Array<any>,
-  date:Date
+  date: Date
 })
 
 export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
@@ -64,15 +64,38 @@ export const Item = model<IItem>("Item", itemsSchema);
 export const Order = model<IOrder>("Order", ordersSchema);
 
 export const models: { model: mongoose.Model<any>; capabilities: string[], path: string, extraCapabilities: ((router: Router) => void)[]; }[] =
-  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/", extraCapabilities: [
-    function orderHistory(router: Router) {
-      router.get("/:id/history", async (req, res) => {
-        const multiple = await Order.find({ restaurantId: req.params.id });
-        if (!multiple) return res.sendStatus(404);
-        return res.send(multiple);
-      });
-    },
-  ] },
+  [{
+    model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/", extraCapabilities: [
+      function stats(router: Router) {
+        router.get("/:id/stats", async (req, res) => {
+          const stats: any = {}
+          stats.totalOrderNumber = (await Order.find({ restaurantId: req.params.id })).length;
+          let lastweek = new Date()
+          lastweek.setDate(lastweek.getDate()-7)
+          stats.weeklyOrderNumber = (await Order.find({
+            date: {
+              $gte: lastweek
+            }
+          })).length
+          let lastMonth = new Date()
+          lastMonth.setDate(lastMonth.getDate()-7)
+          stats.monthlyOrderNumber = (await Order.find({
+            date: {
+              $gte: lastMonth
+            }
+          })).length
+          return res.send(stats);
+        });
+      },
+      function history(router: Router) {
+        router.get("/:id/history", async (req, res) => {
+          const multiple = await Order.find({ restaurantId: req.params.id });
+          if (!multiple) return res.sendStatus(404);
+          return res.send(multiple);
+        });
+      },
+    ]
+  },
   { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/menu/", extraCapabilities: [] },
   { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/item/", extraCapabilities: [] }];
 mongoose.connection.on("error", () => {
