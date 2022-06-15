@@ -1,3 +1,4 @@
+import { Router } from "express";
 import mongoose, {
   Schema,
   Connection,
@@ -45,6 +46,7 @@ export const models: {
     model: Deliverer,
     capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
     path: "/",
+    extraCapabilities: ((router: Router) => void)[];
   },
 ];
 mongoose.connection.on("error", () => {
