@@ -6,6 +6,7 @@ import mongoose, {
   ObjectId,
   Number,
   Types,
+  Date,
 } from "mongoose";
 
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
@@ -34,6 +35,7 @@ export interface IOrder {
   totalPrice: Number;
   tipAmount: Number;
   items: Array<any>;
+  date:Date;
 }
 
 const usersSchema = new Schema<IDeliverer>({
@@ -54,7 +56,8 @@ const ordersSchema = new Schema<IOrder>({
   customerId: String,
   delivererId: String,
   totalPrice: Number,
-  items: Array<any>
+  items: Array<any>,
+  date:Date
 })
 
 export const Order = model<IOrder>("Order", ordersSchema);
