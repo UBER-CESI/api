@@ -16,7 +16,7 @@ if (cluster.isPrimary) {
     });
   });
 } else {
-  import("routes").then((routes) => {
+  import("./routes").then((routes) => {
     routes.default.spawn();
   });
 }

@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { init, models } from "model";
+import { init, models } from "../model";
 import mongoose from "mongoose";
 const listen_port = process.env.LISTEN_PORT;
 const router = Router();
