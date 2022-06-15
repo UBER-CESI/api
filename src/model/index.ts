@@ -41,7 +41,7 @@ export const models: {
   model: mongoose.Model<any>;
   capabilities: string[];
   path: string;
-  extraCapabilities: [(router: Router) => void];
+  extraCapabilities: ((router: Router) => void)[];
 }[] = [
   {
     model: Customer,
