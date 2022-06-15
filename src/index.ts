@@ -1,5 +1,5 @@
 import cluster from "node:cluster";
-import("routes").then((routes) => {
+import("./routes").then((routes) => {
   routes.default.spawn();
 });
 /*
