@@ -4,4 +4,4 @@ Orders : [![Node.js CI](https://github.com/UBER-CESI/api/actions/workflows/ci.ym
 
 Customers : [![Node.js CI](https://github.com/UBER-CESI/api/actions/workflows/ci.yml/badge.svg?branch=customers)](https://github.com/UBER-CESI/api/actions/workflows/ci.yml)
 
-Deliverers : [![Node.js CI](https://github.com/UBER-CESI/api/actions/workflows/ci.yml/badge.svg?branch=deliverer)](https://github.com/UBER-CESI/api/actions/workflows/ci.yml)
+Deliverers : [![Node.js CI](https://github.com/UBER-CESI/api/actions/workflows/ci.yml/badge.svg?branch=deliverers)](https://github.com/UBER-CESI/api/actions/workflows/ci.yml)
