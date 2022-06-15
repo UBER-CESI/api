@@ -58,6 +58,15 @@ const autoRouter: {
   },
 };
 
+models.forEach(({ model, capabilities, path, extraCapabilities }) => {
+  const router2 = Router();
+  capabilities.forEach((cap) => {
+    autoRouter[cap]?.(model, router2);
+  });
+  extraCapabilities?.forEach((cap) => cap(router2));
+  app.use(path, router);
+});
+
 router.use("/:id", (req, res, next) => {
   if (isHex(req.params.id)) return res.sendStatus(400);
   if (req.body._id) return res.sendStatus(400);
@@ -68,14 +77,6 @@ router.use("/:id/*", (req, res, next) => {
   if (isHex(req.params.id)) return res.sendStatus(400);
   if (req.body._id) return res.sendStatus(400);
   next();
-});
-
-models.forEach(({ model, capabilities, path }) => {
-  const router2 = Router();
-  capabilities.forEach((cap) => {
-    autoRouter[cap]?.(model, router2);
-  });
-  app.use(path, router2);
 });
 
 const server = app.listen(listen_port, () => {

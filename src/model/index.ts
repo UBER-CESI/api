@@ -1,3 +1,4 @@
+import { Router } from "express";
 import mongoose, {
   Schema,
   Connection,
@@ -39,8 +40,8 @@ const ordersSchema = new Schema<IOrder>({
 
 export const Order = model<IOrder>("Order", ordersSchema);
 
-export const models: { model: mongoose.Model<any>; capabilities: string[], path:string }[] =
-  [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"] , path:"/"}];
+export const models: { model: mongoose.Model<any>; capabilities: string[], path: string, extraCapabilities?: ((router: Router) => void)[]; }[] =
+  [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"], path: "/",extraCapabilities:[] }];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });
