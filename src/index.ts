@@ -5,7 +5,7 @@ import("routes").then((routes) => {
 /*
 if (cluster.isPrimary) {
   import("node:os").then((os) => {
-    const totalCPUs = os.cpus().length;
+    const totalCPUs = Number(process.env.CPU_NUMBER) | os.cpus().length;
     console.log(`Number of CPUs is ${totalCPUs}`);
     console.log(`Master ${process.pid} is running`);
 
