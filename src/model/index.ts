@@ -47,7 +47,26 @@ export const models: {
     model: Customer,
     capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
     path: "/",
-    extraCapabilities: [],
+    extraCapabilities: [
+      function orderHistory(router: Router) {
+        /*router.post("/:id/history", async (req, res) => {
+          const single = await Customer.findOne({ _id: req.params.id });
+          if (!single) return res.sendStatus(404);
+          single.suspendedAt = new Date();
+          await single.save();
+          return res.send(single);
+        });*/
+      },
+      function suspend(router: Router) {
+        router.post("/:id/suspend", async (req, res) => {
+          const single = await Customer.findOne({ _id: req.params.id });
+          if (!single) return res.sendStatus(404);
+          single.suspendedAt = new Date();
+          await single.save();
+          return res.send(single);
+        });
+      },
+    ],
   },
 ];
 
