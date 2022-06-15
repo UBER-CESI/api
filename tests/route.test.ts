@@ -3,104 +3,105 @@ import axios from "axios";
 import { expect } from "chai";
 import "mocha";
 
-describe("Test Order routes", () => {
+describe("Test Customer routes", () => {
   const listen_address =
     process.env.LISTEN_ADDRESS + ":" + process.env.LISTEN_PORT;
-  var orderId: Number;
-  var order = {
-    restaurantId: "acab",
-    customerId: "acab2",
-    delivererId: "acab3",
-    totalPrice: 25,
-    items: [{ id: "acab5" }],
+  var userId: Number;
+  var user = {
+    email: "mocha@test.fr",
+    nickname: "mocha",
+    firstname: "test",
+    lastname: "yes",
+    phoneNumber: "0666666666",
   };
-  it("Create an order", () => {
+  it("Register a customer", () => {
     var config = {
       method: "put",
       url: "http://" + listen_address + "/",
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify(order),
+      data: JSON.stringify(user),
     };
 
     return axios(config).then(function (response) {
       expect(response.status).to.equal(201);
-      orderId = response.data._id;
+      userId = response.data._id;
     });
   });
-  it("Get the order", () => {
+  it("Get the customer", () => {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + orderId,
+      url: "http://" + listen_address + "/" + userId,
       headers: {},
     };
 
     return axios(config).then(function (response) {
-      expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
-      expect(response.data.customerId).to.equal(order.customerId);
-      expect(response.data.delivererId).to.equal(order.delivererId);
-      expect(response.data.totalPrice).to.equal(order.totalPrice);
+      expect(response.data.email).to.equal(user.email);
+      expect(response.data.nickname).to.equal(user.nickname);
+      expect(response.data.firstname).to.equal(user.firstname);
+      expect(response.data.lastname).to.equal(user.lastname);
+      expect(response.data.phoneNumber).to.equal(user.phoneNumber);
       expect(response.status).to.equal(200);
     });
   });
-  it("Edit the order", () => {
-    order.totalPrice = 12324;
+  it("Edit the customer", () => {
+    user.email = "mocha2@test.fr";
     var config = {
       method: "post",
-      url: "http://" + listen_address + "/" + orderId,
+      url: "http://" + listen_address + "/" + userId,
       headers: {
         "Content-Type": "application/json",
       },
-      data: JSON.stringify(order),
+      data: JSON.stringify(user),
     };
 
     return axios(config).then(function (response) {
-      expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
-      expect(response.data.customerId).to.equal(order.customerId);
-      expect(response.data.delivererId).to.equal(order.delivererId);
-      expect(response.data.totalPrice).to.equal(order.totalPrice);
+      expect(response.data.email).to.equal(user.email);
+      expect(response.data.nickname).to.equal(user.nickname);
+      expect(response.data.firstname).to.equal(user.firstname);
+      expect(response.data.lastname).to.equal(user.lastname);
+      expect(response.data.phoneNumber).to.equal(user.phoneNumber);
       expect(response.status).to.equal(200);
     });
   });
-  it("Get the edited order", () => {
+  it("Get the edited customer", () => {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + orderId,
+      url: "http://" + listen_address + "/" + userId,
       headers: {},
     };
 
     return axios(config).then(function (response) {
-      expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
-      expect(response.data.customerId).to.equal(order.customerId);
-      expect(response.data.delivererId).to.equal(order.delivererId);
-      expect(response.data.totalPrice).to.equal(order.totalPrice);
+      expect(response.data.email).to.equal(user.email);
+      expect(response.data.nickname).to.equal(user.nickname);
+      expect(response.data.firstname).to.equal(user.firstname);
+      expect(response.data.lastname).to.equal(user.lastname);
+      expect(response.data.phoneNumber).to.equal(user.phoneNumber);
       expect(response.status).to.equal(200);
     });
   });
-  it("Delete the registered order", () => {
+  it("Delete the registered customer", () => {
     var config = {
       method: "delete",
-      url: "http://" + listen_address + "/" + orderId,
+      url: "http://" + listen_address + "/" + userId,
       headers: {},
     };
 
     return axios(config).then(function (response) {
-      expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
-      expect(response.data.customerId).to.equal(order.customerId);
-      expect(response.data.delivererId).to.equal(order.delivererId);
-      expect(response.data.totalPrice).to.equal(order.totalPrice);
+      expect(response.data._id).to.equal(userId);
+      expect(response.data.email).to.equal(user.email);
+      expect(response.data.nickname).to.equal(user.nickname);
+      expect(response.data.firstname).to.equal(user.firstname);
+      expect(response.data.lastname).to.equal(user.lastname);
+      expect(response.data.phoneNumber).to.equal(user.phoneNumber);
       expect(response.status).to.equal(200);
     });
   });
-  it("Check that order is deleted", () => {
+  it("Check that customer is deleted", () => {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + orderId,
+      url: "http://" + listen_address + "/" + userId,
       headers: {},
     };
 
