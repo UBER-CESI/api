@@ -6,7 +6,7 @@ import mongoose, {
   ObjectId,
   Number,
 } from "mongoose";
-import { IMenu, IItem, IItemOption } from "./menu"
+import { IMenu, IItem, IItemOption, IOrder } from "./menu"
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
@@ -46,12 +46,32 @@ const restaurantsSchema = new Schema<IRestaurant>({
   phoneNumber: String,
 });
 
+const ordersSchema = new Schema<IOrder>({
+  /*restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
+  customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
+  delivererId: { type: Schema.Types.ObjectId, ref: "Deliverer" },*/
+  restaurantId: String,
+  customerId: String,
+  delivererId: String,
+  totalPrice: Number,
+  items: Array<any>
+})
+
 export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
 export const Menu = model<IMenu>("Menu", menusSchema);
 export const Item = model<IItem>("Item", itemsSchema);
+export const Order = model<IOrder>("Order", ordersSchema);
 
 export const models: { model: mongoose.Model<any>; capabilities: string[], path: string, extraCapabilities: ((router: Router) => void)[]; }[] =
-  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/", extraCapabilities: [] },
+  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/", extraCapabilities: [
+    function orderHistory(router: Router) {
+      router.get("/:id/history", async (req, res) => {
+        const multiple = await Order.find({ restaurantId: req.params.id });
+        if (!multiple) return res.sendStatus(404);
+        return res.send(multiple);
+      });
+    },
+  ] },
   { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/menu/", extraCapabilities: [] },
   { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/item/", extraCapabilities: [] }];
 mongoose.connection.on("error", () => {
