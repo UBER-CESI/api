@@ -1,3 +1,4 @@
+import { Router } from "express";
 import mongoose, {
   Schema,
   Connection,
@@ -49,10 +50,10 @@ export const Restaurant = model<IRestaurant>("Restaurant", restaurantsSchema);
 export const Menu = model<IMenu>("Menu", menusSchema);
 export const Item = model<IItem>("Item", itemsSchema);
 
-export const models: { model: mongoose.Model<any>; capabilities: string[], path: string }[] =
-  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/" },
-  { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/menu/" },
-  { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/item/" }];
+export const models: { model: mongoose.Model<any>; capabilities: string[], path: string, extraCapabilities: ((router: Router) => void)[]; }[] =
+  [{ model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/", extraCapabilities: [] },
+  { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/menu/", extraCapabilities: [] },
+  { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:id/item/", extraCapabilities: [] }];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");
 });

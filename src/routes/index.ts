@@ -75,6 +75,7 @@ models.forEach(({ model, capabilities, path }) => {
   capabilities.forEach((cap) => {
     autoRouter[cap]?.(model, router2);
   });
+  extraCapabilities.forEach((cap) => cap(router2));
   app.use(path, router2);
 });
 
