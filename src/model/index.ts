@@ -5,6 +5,7 @@ import mongoose, {
   model,
   ObjectId,
   Number,
+  Types,
 } from "mongoose";
 
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
@@ -25,6 +26,16 @@ interface IDeliverer {
   suspendedAt?: Date;
 }
 
+export interface IOrder {
+  _id?: ObjectId;
+  restaurantId: Types.ObjectId;
+  customerId: Types.ObjectId;
+  delivererId: Types.ObjectId;
+  totalPrice: Number;
+  tipAmount: Number;
+  items: Array<any>;
+}
+
 const usersSchema = new Schema<IDeliverer>({
   userId: Number,
   email: String,
@@ -35,18 +46,40 @@ const usersSchema = new Schema<IDeliverer>({
   suspendedAt: Date,
 });
 
+const ordersSchema = new Schema<IOrder>({
+  /*restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
+  customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
+  delivererId: { type: Schema.Types.ObjectId, ref: "Deliverer" },*/
+  restaurantId: String,
+  customerId: String,
+  delivererId: String,
+  totalPrice: Number,
+  items: Array<any>
+})
+
+export const Order = model<IOrder>("Order", ordersSchema);
+
 const Deliverer = model<IDeliverer>("Deliverer", usersSchema);
 
 export const models: {
   model: mongoose.Model<any>;
   capabilities: string[];
   path: "/";
+  extraCapabilities: ((router: Router) => void)[];
 }[] = [
   {
     model: Deliverer,
     capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
     path: "/",
-    extraCapabilities: ((router: Router) => void)[];
+    extraCapabilities: [
+      function orderHistory(router: Router) {
+        router.get("/:id/history", async (req, res) => {
+          const multiple = await Order.find({ delivererId: req.params.id });
+          if (!multiple) return res.sendStatus(404);
+          return res.send(multiple);
+        });
+      },
+    ],
   },
 ];
 mongoose.connection.on("error", () => {
