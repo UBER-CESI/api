@@ -5,6 +5,7 @@ import mongoose, {
   model,
   ObjectId,
   Number,
+  Types,
 } from "mongoose";
 
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
@@ -15,7 +16,7 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 export default mongoose;
 
 interface ICustomer {
-  _id?: ObjectId;
+  _id?: Types.ObjectId;
   userId: Number;
   email: string;
   nickname: string;
@@ -23,6 +24,16 @@ interface ICustomer {
   lastname: string;
   phoneNumber: string;
   suspendedAt?: Date;
+}
+
+export interface IOrder {
+  _id?: ObjectId;
+  restaurantId: Types.ObjectId;
+  customerId: Types.ObjectId;
+  delivererId: Types.ObjectId;
+  totalPrice: Number;
+  tipAmount: Number;
+  items: Array<any>;
 }
 
 const usersSchema = new Schema<ICustomer>({
@@ -34,6 +45,21 @@ const usersSchema = new Schema<ICustomer>({
   phoneNumber: String,
   suspendedAt: Date,
 });
+
+
+
+const ordersSchema = new Schema<IOrder>({
+  /*restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
+  customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
+  delivererId: { type: Schema.Types.ObjectId, ref: "Deliverer" },*/
+  restaurantId: String,
+  customerId: String,
+  delivererId: String,
+  totalPrice: Number,
+  items: Array<any>
+})
+
+export const Order = model<IOrder>("Order", ordersSchema);
 
 const Customer = model<ICustomer>("Customer", usersSchema);
 
@@ -49,12 +75,10 @@ export const models: {
     path: "/",
     extraCapabilities: [
       function orderHistory(router: Router) {
-        router.post("/:id/history", async (req, res) => {
-          const single = await Customer.findOne({ _id: req.params.id });
-          if (!single) return res.sendStatus(404);
-          single.suspendedAt = new Date();
-          await single.save();
-          return res.send(single);
+        router.get("/:id/history", async (req, res) => {
+          const multiple = await Order.find({ customerId: req.params.id });
+          if (!multiple) return res.sendStatus(404);
+          return res.send(multiple);
         });
       },
     ],
