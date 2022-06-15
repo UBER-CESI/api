@@ -1,3 +1,4 @@
+import { Router } from "express";
 import mongoose, {
   Schema,
   Connection,
@@ -17,6 +18,7 @@ export const models: {
   model: mongoose.Model<any>;
   capabilities: string[];
   path: string;
+  extraCapabilities: [(router: Router) => void];
 }[] = [];
 mongoose.connection.on("error", () => {
   throw new Error("MongoDB Connection Error");

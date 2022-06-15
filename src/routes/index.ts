@@ -57,11 +57,12 @@ const autoRouter: {
   },
 };
 
-models.forEach(({ model, capabilities, path }) => {
+models.forEach(({ model, capabilities, path, extraCapabilities }) => {
   const router2 = Router();
   capabilities.forEach((cap) => {
     autoRouter[cap]?.(model, router2);
   });
+  extraCapabilities.forEach((cap) => cap(router2));
   app.use(path, router);
 });
 
