@@ -22,8 +22,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build the Docker image
-      run: |
-      docker build . --file Dockerfile --tag ghcr.io/UBER-CESI/api-restaurants:$(date +%s)
-      docker run ghcr.io/UBER-CESI/api-restaurants:$(date +%s)
-      docker push ghcr.io/UBER-CESI/api-restaurants:$(date +%s)
+      run: docker build . --file Dockerfile --tag ghcr.io/UBER-CESI/api-restaurants:$(date +%s)
+      run: docker run ghcr.io/UBER-CESI/api-restaurants:$(date +%s)
+      run: docker push ghcr.io/UBER-CESI/api-restaurants:$(date +%s)
 
