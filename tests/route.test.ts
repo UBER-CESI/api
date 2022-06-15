@@ -93,7 +93,6 @@ describe("Test Customer routes", () => {
     };
 
     return axios(config).then(function (response) {
-      console.log(response.data);
       should().exist(response.data.suspendedAt);
       expect(response.status).to.equal(200);
     });
