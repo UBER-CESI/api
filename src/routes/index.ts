@@ -27,7 +27,8 @@ const autoRouter: {
   },
   LIST: (model: mongoose.Model<any>, _router: Router = router) => {
     _router.get("/", async (req, res) => {
-      const multiple = await model.find();
+      const UID = req.query.UID;
+      const multiple = await model.find({ userId: UID });
       if (!multiple) return res.sendStatus(404);
       return res.send(multiple);
     });
