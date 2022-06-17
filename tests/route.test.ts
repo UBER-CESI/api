@@ -54,11 +54,13 @@ describe("Test Customer routes", () => {
     };
 
     return axios(config).then(function (response) {
-      expect(response.data.email).to.equal(user.email);
-      expect(response.data.nickname).to.equal(user.nickname);
-      expect(response.data.firstname).to.equal(user.firstname);
-      expect(response.data.lastname).to.equal(user.lastname);
-      expect(response.data.phoneNumber).to.equal(user.phoneNumber);
+      const result = response.data.find((u: any) => u._id == userId);
+
+      expect(result.email).to.equal(user.email);
+      expect(result.nickname).to.equal(user.nickname);
+      expect(result.firstname).to.equal(user.firstname);
+      expect(result.lastname).to.equal(user.lastname);
+      expect(result.phoneNumber).to.equal(user.phoneNumber);
       expect(response.status).to.equal(200);
     });
   });
@@ -72,7 +74,6 @@ describe("Test Customer routes", () => {
       },
       data: JSON.stringify(user),
     };
-
     return axios(config).then(function (response) {
       expect(response.data.email).to.equal(user.email);
       expect(response.data.nickname).to.equal(user.nickname);
