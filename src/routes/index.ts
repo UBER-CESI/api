@@ -27,8 +27,17 @@ const autoRouter: {
   },
   LIST: (model: mongoose.Model<any>, _router: Router = router) => {
     _router.get("/", async (req, res) => {
-      const UID = req.query.byUid;
-      const multiple = await model.find({ userId: UID });
+      const search: any = {};
+      if (req.query.byUid) {
+        search.userId = req.query.byUid;
+      }
+      if (req.query.byRestaurantId) {
+        search.restaurantId = req.query.byRestaurantId;
+      }
+      if (req.query.byDelivererId) {
+        search.delivererId = req.query.byDelivererId;
+      }
+      const multiple = await model.find(search);
       if (!multiple) return res.sendStatus(404);
       return res.send(multiple);
     });
