@@ -8,6 +8,7 @@ describe("Test Customer routes", () => {
     process.env.LISTEN_ADDRESS + ":" + process.env.LISTEN_PORT;
   var userId: Number;
   var user = {
+    userId: 666,
     email: "mocha@test.fr",
     nickname: "mocha",
     firstname: "test",
@@ -33,6 +34,22 @@ describe("Test Customer routes", () => {
     var config = {
       method: "get",
       url: "http://" + listen_address + "/" + userId,
+      headers: {},
+    };
+
+    return axios(config).then(function (response) {
+      expect(response.data.email).to.equal(user.email);
+      expect(response.data.nickname).to.equal(user.nickname);
+      expect(response.data.firstname).to.equal(user.firstname);
+      expect(response.data.lastname).to.equal(user.lastname);
+      expect(response.data.phoneNumber).to.equal(user.phoneNumber);
+      expect(response.status).to.equal(200);
+    });
+  });
+  it("Get the customer by its UID", () => {
+    var config = {
+      method: "get",
+      url: "http://" + listen_address + "/?byUid=666",
       headers: {},
     };
 
