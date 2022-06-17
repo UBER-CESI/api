@@ -25,6 +25,7 @@ export interface IOrder {
   totalPrice: Number;
   tipAmount: Number;
   items: Array<IItem | IMenu>;
+  status:String;
 }
 
 const ordersSchema = new Schema<IOrder>({
@@ -35,7 +36,8 @@ const ordersSchema = new Schema<IOrder>({
   customerId: String,
   delivererId: String,
   totalPrice: Number,
-  items: Array<IItem | IMenu>
+  items: Array<IItem | IMenu>,
+  status:String,
 })
 
 export const Order = model<IOrder>("Order", ordersSchema);
