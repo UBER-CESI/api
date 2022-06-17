@@ -39,7 +39,7 @@ export default function suite() {
   it("Create an Item", function () {
     var config = {
       method: "put",
-      url: "http://" + listen_address + "/" + restaurantId + "/item",
+      url: "http://" + listen_address + "/item",
       headers: {
         "Content-Type": "application/json",
       },
@@ -53,7 +53,7 @@ export default function suite() {
   it("Get the Item", function () {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/item/" + itemId,
     };
     return axios(config).then(function (response) {
       expect(response.data.name).to.equal(sampleMenuItem.name);
@@ -69,7 +69,7 @@ export default function suite() {
     sampleMenuItem.description = "blablabla but edited";
     var config = {
       method: "post",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/item/" + itemId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -83,7 +83,7 @@ export default function suite() {
   it("Check that Item is edited", function () {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/item/" + itemId,
     };
     return axios(config).then(function (response) {
       expect(response.data.name).to.equal(sampleMenuItem.name);
@@ -98,7 +98,7 @@ export default function suite() {
   it("Delete the Item", function () {
     var config = {
       method: "delete",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/item/" + itemId,
     };
     return axios(config).then(function (response) {
       expect(response.status).to.equal(200);
@@ -107,7 +107,7 @@ export default function suite() {
   it("Check that item is deleted", () => {
     var config = {
       method: "get",
-      url: "http://" + listen_address + "/" + restaurantId + "/item/" + itemId,
+      url: "http://" + listen_address + "/item/" + itemId,
       headers: {},
     };
 
