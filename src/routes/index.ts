@@ -29,10 +29,11 @@ const autoRouter: {
   LIST: (model: mongoose.Model<any>, _router: Router = router) => {
     _router.get("/", async (req, res) => {
       const search: any = {};
+      const { restId } = req.params as any;
       if (req.query.byUid) {
         search.userId = req.query.byUid;
       }
-      if (req.query.byRestaurantId) {
+      if (restId) {
         search.restaurantId = req.query.byRestaurantId;
       }
       if (req.query.byDelivererId) {
@@ -81,7 +82,7 @@ router.use("/:id/*", (req, res, next) => {
 });
 
 models.forEach(({ model, capabilities, path, extraCapabilities }) => {
-  const router2 = Router();
+  const router2 = Router({ mergeParams: true });
   extraCapabilities.forEach((cap) => cap(router2));
   capabilities.forEach((cap) => {
     autoRouter[cap]?.(model, router2);
