@@ -7,10 +7,14 @@ import mongoose, {
   Number,
 } from "mongoose";
 import { IMenu, IItem, IItemOption, IOrder } from "./menu"
+
+if (!process.env.DB_HOST) throw new Error("DB_HOST env arg not specified");
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
-  authSource: "admin",
+  dbName: process.env.DB_NAME,
+  authSource: process.env.DB_NAME,
+  ssl: false,
 });
 export default mongoose;
 
@@ -98,9 +102,9 @@ export const models: { model: mongoose.Model<any>; capabilities: string[], path:
   },
   { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/menu/", extraCapabilities: [] },
   { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/item/", extraCapabilities: [] }];
-mongoose.connection.on("error", () => {
-  throw new Error("MongoDB Connection Error");
-});
+  mongoose.connection.on("error", (e) => {
+    throw new Error(e.reason);
+  });
 export const init = new Promise<Connection>((resolve) => {
   mongoose.connection.once("open", () => {
     resolve(mongoose.connection);
