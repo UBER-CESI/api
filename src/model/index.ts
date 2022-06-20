@@ -91,7 +91,7 @@ export const models: {
 ];
 
 mongoose.connection.on("error", (e) => {
-  throw new Error(e);
+  throw new Error(e.reason);
 });
 export const init = new Promise<Connection>((resolve) => {
   mongoose.connection.once("open", () => {
