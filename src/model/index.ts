@@ -9,10 +9,13 @@ import mongoose, {
 } from "mongoose";
 import { IMenu, IItem } from "./menu"
 
+if (!process.env.DB_HOST) throw new Error("DB_HOST env arg not specified");
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
   pass: process.env.DB_PASS,
-  authSource: "admin",
+  dbName: process.env.DB_NAME,
+  authSource: process.env.DB_NAME,
+  ssl: false,
 });
 export default mongoose;
 
@@ -44,8 +47,8 @@ export const Order = model<IOrder>("Order", ordersSchema);
 
 export const models: { model: mongoose.Model<any>; capabilities: string[], path: string, extraCapabilities?: ((router: Router) => void)[]; }[] =
   [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"], path: "/",extraCapabilities:[] }];
-mongoose.connection.on("error", () => {
-  throw new Error("MongoDB Connection Error");
+mongoose.connection.on("error", (e) => {
+  throw new Error(e.reason);
 });
 export const init = new Promise<Connection>((resolve) => {
   mongoose.connection.once("open", () => {
