@@ -25,6 +25,7 @@ export interface IRestaurant {
   email: string;
   name: String;
   phoneNumber: string;
+  address: string;
 }
 
 const itemsSchema = new Schema<IItem>({
@@ -48,6 +49,7 @@ const restaurantsSchema = new Schema<IRestaurant>({
   email: String,
   name: String,
   phoneNumber: String,
+  address: String,
 });
 
 const ordersSchema = new Schema<IOrder>({
@@ -75,14 +77,14 @@ export const models: { model: mongoose.Model<any>; capabilities: string[], path:
           const stats: any = {}
           stats.totalOrderNumber = (await Order.find({ restaurantId: req.params.id })).length;
           let lastweek = new Date()
-          lastweek.setDate(lastweek.getDate()-7)
+          lastweek.setDate(lastweek.getDate() - 7)
           stats.weeklyOrderNumber = (await Order.find({
             date: {
               $gte: lastweek
             }
           })).length
           let lastMonth = new Date()
-          lastMonth.setDate(lastMonth.getDate()-7)
+          lastMonth.setDate(lastMonth.getDate() - 7)
           stats.monthlyOrderNumber = (await Order.find({
             date: {
               $gte: lastMonth
@@ -102,9 +104,9 @@ export const models: { model: mongoose.Model<any>; capabilities: string[], path:
   },
   { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/menu/", extraCapabilities: [] },
   { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/item/", extraCapabilities: [] }];
-  mongoose.connection.on("error", (e) => {
-    throw new Error(e.reason);
-  });
+mongoose.connection.on("error", (e) => {
+  throw new Error(e.reason);
+});
 export const init = new Promise<Connection>((resolve) => {
   mongoose.connection.once("open", () => {
     resolve(mongoose.connection);
