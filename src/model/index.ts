@@ -7,6 +7,7 @@ import mongoose, {
   Number,
   Types,
 } from "mongoose";
+import { PushSubscription } from "web-push";
 
 if (!process.env.DB_HOST) throw new Error("DB_HOST env arg not specified");
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
@@ -18,11 +19,8 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
-interface PushSubscriptions {
-  [endpoint: string]: {
-    expirationTime: number;
-    keys: Record<"p256dh" | "auth", string>
-  }
+export interface PushSubscriptions {
+  [endpoint: string]: PushSubscription
 }
 
 interface ICustomer {
