@@ -18,6 +18,13 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
+interface PushSubscriptions {
+  [endpoint: string]: {
+    expirationTime: number;
+    keys: Record<"p256dh" | "auth", string>
+  }
+}
+
 interface ICustomer {
   _id?: Types.ObjectId;
   userId: Number;
@@ -27,6 +34,7 @@ interface ICustomer {
   lastname: string;
   phoneNumber: string;
   suspendedAt?: Date;
+  subscriptions?: PushSubscriptions;
 }
 
 export interface IOrder {
@@ -37,7 +45,7 @@ export interface IOrder {
   totalPrice: Number;
   tipAmount: Number;
   items: Array<any>;
-  date:Date;
+  date: Date;
 }
 
 const usersSchema = new Schema<ICustomer>({
@@ -48,6 +56,7 @@ const usersSchema = new Schema<ICustomer>({
   lastname: String,
   phoneNumber: String,
   suspendedAt: Date,
+  subscriptions: Object,
 });
 
 
@@ -61,7 +70,7 @@ const ordersSchema = new Schema<IOrder>({
   delivererId: String,
   totalPrice: Number,
   items: Array<any>,
-  date:Date,
+  date: Date,
 })
 
 export const Order = model<IOrder>("Order", ordersSchema);
@@ -74,21 +83,21 @@ export const models: {
   path: string;
   extraCapabilities: ((router: Router) => void)[];
 }[] = [
-  {
-    model: Customer,
-    capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
-    path: "/",
-    extraCapabilities: [
-      function orderHistory(router: Router) {
-        router.get("/:id/history", async (req, res) => {
-          const multiple = await Order.find({ customerId: req.params.id });
-          if (!multiple) return res.sendStatus(404);
-          return res.send(multiple);
-        });
-      },
-    ],
-  },
-];
+    {
+      model: Customer,
+      capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
+      path: "/",
+      extraCapabilities: [
+        function orderHistory(router: Router) {
+          router.get("/:id/history", async (req, res) => {
+            const multiple = await Order.find({ customerId: req.params.id });
+            if (!multiple) return res.sendStatus(404);
+            return res.send(multiple);
+          });
+        },
+      ],
+    },
+  ];
 
 mongoose.connection.on("error", (e) => {
   throw new Error(e.reason);

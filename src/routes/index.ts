@@ -70,6 +70,26 @@ const autoRouter: {
       return res.send(single);
     });
   },
+  SUBSCRIBE: (model: mongoose.Model<any>, _router: Router = router) => {
+    _router.post("/:id/subscribe", async (req, res) => {
+      const single = await model.findOne({ _id: req.params.id });
+      if (!single) return res.sendStatus(404);
+      const { endpoint, ...subscription } = req.body.subscription
+      single.subscription[endpoint] = subscription
+      await single.save();
+      return res.send(single);
+    });
+  },
+  UNSUBSCRIBE: (model: mongoose.Model<any>, _router: Router = router) => {
+    _router.post("/:id/unsubscribe", async (req, res) => {
+      const single = await model.findOne({ _id: req.params.id });
+      if (!single) return res.sendStatus(404);
+      const { endpoint } = req.body.subscription
+      delete single.subscription[endpoint]
+      await single.save();
+      return res.send(single);
+    });
+  },
 };
 
 router.use("/:id", (req, res, next) => {
@@ -98,7 +118,7 @@ const server = app.listen(listen_port, () => {
 });
 
 export default {
-  async spawn() {},
+  async spawn() { },
   stop() {
     server.close();
     init.then((e) => e.close());
