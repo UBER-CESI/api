@@ -73,7 +73,7 @@ const ordersSchema = new Schema<IOrder>({
 
 export const Order = model<IOrder>("Order", ordersSchema);
 
-const Customer = model<ICustomer>("Customer", usersSchema);
+export const Customer = model<ICustomer>("Customer", usersSchema);
 
 export const models: {
   model: mongoose.Model<any>;
