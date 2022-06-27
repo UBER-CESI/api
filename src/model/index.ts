@@ -102,8 +102,9 @@ export const models: { model: mongoose.Model<any>; capabilities: string[], path:
       },
     ]
   },
-  { model: Menu, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/menu/", extraCapabilities: [] },
-  { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/item/", extraCapabilities: [] }];
+  { model: Menu, capabilities: ["CREATE",  "LIST", ], path: "/:restId/menu/", extraCapabilities: [] },
+  { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/item/", extraCapabilities: [] },
+  { model: Menu, capabilities: ["GET", "DELETE", "EDIT",], path: "/menu/", extraCapabilities: [] }];
 mongoose.connection.on("error", (e) => {
   throw new Error(e.reason);
 });

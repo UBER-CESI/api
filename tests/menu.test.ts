@@ -55,7 +55,7 @@ export default function suite() {
   it("Get the Menu", function () {
     var config = {
       method: "get",
-      url: "http://" + listen_address + `/${restaurantId}/menu/` + menuId,
+      url: "http://" + listen_address + `/menu/` + menuId,
     };
     return axios(config).then(function (response) {
       expect(response.data.name).to.equal(sampleMenu.name);
@@ -71,7 +71,7 @@ export default function suite() {
     sampleMenu.description = "blablabla but edited";
     var config = {
       method: "post",
-      url: "http://" + listen_address + `/${restaurantId}/menu/` + menuId,
+      url: "http://" + listen_address + `/menu/` + menuId,
       headers: {
         "Content-Type": "application/json",
       },
@@ -85,7 +85,7 @@ export default function suite() {
   it("Check that Menu is edited", function () {
     var config = {
       method: "get",
-      url: "http://" + listen_address + `/${restaurantId}/menu/` + menuId,
+      url: "http://" + listen_address + `/menu/` + menuId,
     };
     return axios(config).then(function (response) {
       expect(response.data.name).to.equal(sampleMenu.name);
@@ -100,7 +100,7 @@ export default function suite() {
   it("Delete the Menu", function () {
     var config = {
       method: "delete",
-      url: "http://" + listen_address + `/${restaurantId}/menu/` + menuId,
+      url: "http://" + listen_address + `/menu/` + menuId,
     };
     return axios(config).then(function (response) {
       expect(response.status).to.equal(200);
@@ -109,7 +109,7 @@ export default function suite() {
   it("Check that menu is deleted", () => {
     var config = {
       method: "get",
-      url: "http://" + listen_address + `/${restaurantId}/menu/` + menuId,
+      url: "http://" + listen_address + `/menu/` + menuId,
       headers: {},
     };
 
