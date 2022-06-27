@@ -19,6 +19,12 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
+interface PushSubscriptions {
+  [endpoint: string]: {
+    expirationTime: number;
+    keys: Record<"p256dh" | "auth", string>
+  }
+}
 
 export interface IOrder {
   _id?: ObjectId;
@@ -28,7 +34,7 @@ export interface IOrder {
   totalPrice: Number;
   tipAmount: Number;
   items: Array<IItem | IMenu>;
-  status:String;
+  status: String;
 }
 
 const ordersSchema = new Schema<IOrder>({
@@ -40,13 +46,14 @@ const ordersSchema = new Schema<IOrder>({
   delivererId: String,
   totalPrice: Number,
   items: Array<IItem | IMenu>,
-  status:String,
+  status: String,
 })
 
 export const Order = model<IOrder>("Order", ordersSchema);
 
 export const models: { model: mongoose.Model<any>; capabilities: string[], path: string, extraCapabilities?: ((router: Router) => void)[]; }[] =
-  [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"], path: "/",extraCapabilities:[] }];
+  [{ model: Order, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT"], path: "/", extraCapabilities: [] }];
+
 mongoose.connection.on("error", (e) => {
   throw new Error(e.reason);
 });
