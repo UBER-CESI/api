@@ -85,7 +85,7 @@ export const models: {
 }[] = [
     {
       model: Customer,
-      capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"],
+      capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND", "SUBSCRIBE", "UNSUBSCRIBE"],
       path: "/",
       extraCapabilities: [
         function orderHistory(router: Router) {
