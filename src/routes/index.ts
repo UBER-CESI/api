@@ -38,6 +38,9 @@ const autoRouter: {
       if (req.query.byDelivererId) {
         search.delivererId = req.query.byDelivererId;
       }
+      if (req.query.byCustomerId) {
+        search.customerId = req.query.byCustomerId;
+      }
       const multiple = await model.find(search);
       if (!multiple) return res.sendStatus(404);
       return res.send(multiple);
