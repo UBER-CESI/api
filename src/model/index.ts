@@ -63,9 +63,9 @@ const ordersSchema = new Schema<IOrder>({
   /*restaurantId: { type: Schema.Types.ObjectId, ref: "Restaurant" },
   customerId: { type: Schema.Types.ObjectId, ref: "Customer" },
   delivererId: { type: Schema.Types.ObjectId, ref: "Deliverer" },*/
-  restaurantId: String,
-  customerId: String,
-  delivererId: String,
+  restaurantId: { type: Schema.Types.ObjectId },
+  customerId: { type: Schema.Types.ObjectId },
+  delivererId: { type: Schema.Types.ObjectId },
   totalPrice: Number,
   items: Array<any>,
   date: Date,
