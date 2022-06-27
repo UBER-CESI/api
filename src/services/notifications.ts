@@ -1,5 +1,4 @@
-import webpush from "web-push";
-import { PushSubscription } from "web-push";
+import webpush, { PushSubscription } from "web-push";
 if (!process.env.VAPID_PUBLICKEY || !process.env.VAPID_PRIVATEKEY)
     throw new Error("no VAPID keys found, please set env vars");
 webpush.setVapidDetails(
@@ -8,6 +7,12 @@ webpush.setVapidDetails(
     process.env.VAPID_PRIVATEKEY
 );
 
-export function notify() {
-
+interface PushMessageBody {
+    title?: string
+    body: string
+    image?: string
+    icon?: string
 }
+
+export const sendNotification = (subscription: PushSubscription, body: PushMessageBody) =>
+    webpush.sendNotification(subscription, JSON.stringify(body))
