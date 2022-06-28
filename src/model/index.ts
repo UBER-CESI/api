@@ -70,7 +70,9 @@ export const Item = model<IItem>("Item", itemsSchema);
 export const Order = model<IOrder>("Order", ordersSchema);
 
 export const models: { model: mongoose.Model<any>; capabilities: string[], path: string, extraCapabilities: ((router: Router) => void)[]; }[] =
-  [{
+  [{ model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/item/", extraCapabilities: [] },
+  { model: Menu, capabilities: ["GET", "DELETE", "EDIT", "CREATE", "LIST",], path: "/menu/", extraCapabilities: [] },
+  {
     model: Restaurant, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT", "SUSPEND"], path: "/", extraCapabilities: [
       function stats(router: Router) {
         router.get("/:id/stats", async (req, res) => {
@@ -102,9 +104,7 @@ export const models: { model: mongoose.Model<any>; capabilities: string[], path:
       },
     ]
   },
-  { model: Menu, capabilities: ["CREATE",  "LIST", ], path: "/:restId/menu/", extraCapabilities: [] },
-  { model: Item, capabilities: ["CREATE", "GET", "LIST", "DELETE", "EDIT",], path: "/:restId/item/", extraCapabilities: [] },
-  { model: Menu, capabilities: ["GET", "DELETE", "EDIT",], path: "/menu/", extraCapabilities: [] }];
+  ];
 mongoose.connection.on("error", (e) => {
   throw new Error(e.reason);
 });
