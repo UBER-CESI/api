@@ -70,7 +70,7 @@ const autoRouter: {
       return res.send(single);
     });
   },
-  SUBSCRIBE: (model: mongoose.Model<any>, _router: Router = router) => {
+  SUBSCRIBE: (model: mongoose.Model<any>, _router: Router) => {
     _router.post("/:id/subscribe", async (req, res) => {
       const single = await model.findOne({ _id: req.params.id });
       if (!single) return res.sendStatus(404);
@@ -80,7 +80,7 @@ const autoRouter: {
       return res.send(single);
     });
   },
-  UNSUBSCRIBE: (model: mongoose.Model<any>, _router: Router = router) => {
+  UNSUBSCRIBE: (model: mongoose.Model<any>, _router: Router) => {
     _router.post("/:id/unsubscribe", async (req, res) => {
       const single = await model.findOne({ _id: req.params.id });
       if (!single) return res.sendStatus(404);
