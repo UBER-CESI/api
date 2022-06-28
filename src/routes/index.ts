@@ -83,15 +83,6 @@ models.forEach(({ model, capabilities, path, extraCapabilities }) => {
   app.use(path, router2);
 });
 
-models.forEach(({ model, capabilities, path, extraCapabilities }) => {
-  const router2 = Router({ mergeParams: true });
-  extraCapabilities.forEach((cap) => cap(router2));
-  capabilities.forEach((cap) => {
-    autoRouter[cap]?.(model, router2);
-  });
-  app.use(path, router2);
-});
-
 const server = app.listen(listen_port, () => {
   console.log(`App listening on port ${listen_port}`);
 });
