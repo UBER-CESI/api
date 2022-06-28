@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { init, models } from "../model";
 import mongoose from "mongoose";
+import * as notifications from "~~/services/notifications";
 const listen_port = process.env.LISTEN_PORT;
 const app = express();
 
@@ -110,7 +111,9 @@ const server = app.listen(listen_port, () => {
 });
 
 export default {
-  async spawn() { },
+  async spawn() {
+    notifications.setup()
+  },
   stop() {
     server.close();
     init.then((e) => e.close());

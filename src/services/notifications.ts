@@ -16,3 +16,5 @@ interface PushMessageBody {
 
 export const sendNotification = (subscription: PushSubscription, body: PushMessageBody) =>
     webpush.sendNotification(subscription, JSON.stringify(body))
+
+export function setup() { }
