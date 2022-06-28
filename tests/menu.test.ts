@@ -41,7 +41,7 @@ export default function suite() {
   it("Create a Menu", function () {
     var config = {
       method: "put",
-      url: "http://" + listen_address + `/${restaurantId}/menu/`,
+      url: "http://" + listen_address + `/menu/`,
       headers: {
         "Content-Type": "application/json",
       },
