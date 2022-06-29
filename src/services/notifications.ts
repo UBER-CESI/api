@@ -1,6 +1,7 @@
 import webpush, { PushSubscription } from "web-push";
 import "./Customers"
 import "./Orders"
+import "../model"
 export interface PushMessageBody {
     title?: string
     body: string

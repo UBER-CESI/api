@@ -7,6 +7,7 @@ import Deliverer from "../model/Deliverer";
 
 const options = { fullDocument: "updateLookup" };
 Order.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", status: "$fullDocument.status", customerId: "$fullDocument.customerId" } }], options).on("change", async (change: any) => {
+    console.log("OrderChange")
     if (change.operationType !== "update") return
     if (change.status != "preparing" && change.status != "delivering" && change.status != "delivered") return
     if (!change.customerId) return
