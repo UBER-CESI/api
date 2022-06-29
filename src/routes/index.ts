@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { init, models } from "../model";
 import mongoose from "mongoose";
+import * as notifications from "~~/services/notifications";
 const listen_port = process.env.LISTEN_PORT;
 const app = express();
 app.use(express.json());
@@ -70,6 +71,26 @@ const autoRouter: {
       return res.send(single);
     });
   },
+  SUBSCRIBE: (model: mongoose.Model<any>, _router: Router) => {
+    _router.post("/:id/subscribe", async (req, res) => {
+      const single = await model.findOne({ _id: req.params.id });
+      if (!single) return res.sendStatus(404);
+      /*if (!single.subscriptions) single.subscriptions = {}
+      single.subscriptions[endpoint] = req.body.subscription*/
+      single.subscription = req.body.subscription
+      await single.save();
+      return res.send(single);
+    });
+  },
+  UNSUBSCRIBE: (model: mongoose.Model<any>, _router: Router) => {
+    _router.post("/:id/unsubscribe", async (req, res) => {
+      const single = await model.findOne({ _id: req.params.id });
+      if (!single) return res.sendStatus(404);
+      single.set("subscription", undefined)
+      await single.save();
+      return res.send(single);
+    });
+  },
 };
 
 models.forEach(({ model, capabilities, path, extraCapabilities }) => {
@@ -88,7 +109,9 @@ const server = app.listen(listen_port, () => {
 });
 
 export default {
-  async spawn() { },
+  async spawn() {
+    notifications.setup()
+  },
   stop() {
     server.close();
     init.then((e) => e.close());

@@ -8,6 +8,8 @@ import mongoose, {
 } from "mongoose";
 import { IMenu, IItem, IItemOption, IOrder } from "./menu"
 
+import { PushSubscription } from "web-push";
+
 if (!process.env.DB_HOST) throw new Error("DB_HOST env arg not specified");
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
@@ -26,6 +28,7 @@ export interface IRestaurant {
   name: String;
   phoneNumber: string;
   address: string;
+  subscription?: PushSubscription
 }
 
 const itemsSchema = new Schema<IItem>({
@@ -50,6 +53,7 @@ const restaurantsSchema = new Schema<IRestaurant>({
   name: String,
   phoneNumber: String,
   address: String,
+  subscription: Object
 });
 
 const ordersSchema = new Schema<IOrder>({
