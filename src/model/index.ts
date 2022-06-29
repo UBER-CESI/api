@@ -33,7 +33,7 @@ export interface IOrder {
   delivererId: Types.ObjectId;
   totalPrice: Number;
   tipAmount: Number;
-  items: Array<IItem | IMenu>;
+  menus: Array<IMenu>;
   status: String;
   address: String;
 }
@@ -46,7 +46,7 @@ const ordersSchema = new Schema<IOrder>({
   customerId: String,
   delivererId: String,
   totalPrice: Number,
-  items: Array<IItem | IMenu>,
+  menus: Array<IMenu>,
   status: String,
   address: String
 })
