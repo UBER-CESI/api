@@ -1,4 +1,4 @@
-import { Customer } from "~~/model";
+import { Customer, Order } from "~~/model";
 import webpush, { PushSubscription } from "web-push";
 interface PushMessageBody {
     title?: string
@@ -24,10 +24,10 @@ export function setup() {
 
     const options = { fullDocument: "updateLookup" };
     //[{ $match: { subscriptions: { $exists: true } } }]
-    Customer.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", subscriptions: "$fullDocument.subscriptions", unsuspend: { $in: ["suspendedAt", "$updateDescription.removedFields"] }, suspend: { "$cond": [{ "$ifNull": ["$updateDescription.updatedFields.suspendedAt", null] }, true, false] } } }], options).on("change", (change: any) => {
+    Customer.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", subscriptions: "$fullDocument.subscription", unsuspend: { $in: ["suspendedAt", "$updateDescription.removedFields"] }, suspend: { "$cond": [{ "$ifNull": ["$updateDescription.updatedFields.suspendedAt", null] }, true, false] } } }], options).on("change", (change: any) => {
         if (change.operationType !== "update") return
         if (!change.suspend && !change.unsuspend) return
-        if (!change.subscriptions || !Object.keys(change.subscriptions).length) return
+        if (!change.subscription) return
         const subs = Object.values(change.subscriptions) as PushSubscription[]
         const message: PushMessageBody = { body: "" }
         if (change.suspend) {
@@ -41,5 +41,22 @@ export function setup() {
         subs.forEach(subscription => {
             sendNotification(subscription, message)
         })
+    })
+
+    Order.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", status: "$status", customerId: "$customerId" } }], options).on("change", (change: any) => {
+        if (change.operationType !== "update") return
+        if (change.status != "preparing" || change.status != "delivering") return
+
+        const message: PushMessageBody = { body: "" }
+        if (change.status == "preparing") {
+            message.title = "Your order is being prepared"
+            message.body = "We will update you shortly after"
+        }
+        if (change.status == "delivering") {
+            message.title = "Your account is being delivered"
+            message.body = "The deliverer should contact you soon!"
+        }
+
+        //sendNotification(subscription, message)
     })
 }
