@@ -17,7 +17,7 @@ if (cluster.isPrimary) {
     });
   });
 } else {
-  import("./routes").then((routes) => {
-    routes.default.spawn();
+  import("./services/notifications").then((notifications) => {
+    notifications.setup();
   });
 }
