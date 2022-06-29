@@ -83,7 +83,7 @@ const autoRouter: {
       single.subscriptions[endpoint] = req.body.subscription*/
       single.subscription = req.body.subscription
       await single.save();
-      notifications.sendNotification(req.body.subscription, { body: "test", title: "test" })
+      notifications.sendNotification(req.body.subscription, { body: "You're now subscribed to notifications", title: "Test Notification" })
       return res.send(single);
     });
   },
