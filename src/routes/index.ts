@@ -120,7 +120,6 @@ export default {
     } catch (error) {
       console.error(error)
     }
-
   },
   stop() {
     server.close();
