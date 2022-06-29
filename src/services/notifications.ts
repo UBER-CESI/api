@@ -1,5 +1,7 @@
 import webpush, { PushSubscription } from "web-push";
-interface PushMessageBody {
+import "./Customers"
+import "./Orders"
+export interface PushMessageBody {
     title?: string
     body: string
     image?: string
