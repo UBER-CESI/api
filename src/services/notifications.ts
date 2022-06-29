@@ -24,11 +24,11 @@ export function setup() {
 
     const options = { fullDocument: "updateLookup" };
     //[{ $match: { subscriptions: { $exists: true } } }]
-    Customer.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", subscriptions: "$fullDocument.subscription", unsuspend: { $in: ["suspendedAt", "$updateDescription.removedFields"] }, suspend: { "$cond": [{ "$ifNull": ["$updateDescription.updatedFields.suspendedAt", null] }, true, false] } } }], options).on("change", (change: any) => {
+    Customer.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", subscription: "$fullDocument.subscription", unsuspend: { $in: ["suspendedAt", "$updateDescription.removedFields"] }, suspend: { "$cond": [{ "$ifNull": ["$updateDescription.updatedFields.suspendedAt", null] }, true, false] } } }], options).on("change", (change: any) => {
+        console.log("customerChange")
         if (change.operationType !== "update") return
         if (!change.suspend && !change.unsuspend) return
         if (!change.subscription) return
-        const subs = Object.values(change.subscriptions) as PushSubscription[]
         const message: PushMessageBody = { body: "" }
         if (change.suspend) {
             message.title = "Your account has been suspended!"
@@ -38,25 +38,28 @@ export function setup() {
             message.title = "Your account is no longer suspended!"
             message.body = "We apologize for the inconvenience"
         }
-        subs.forEach(subscription => {
-            sendNotification(subscription, message)
-        })
+        sendNotification(change.subscription, message)
     })
 
-    Order.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", status: "$status", customerId: "$customerId" } }], options).on("change", (change: any) => {
+    Order.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", status: "$fullDocument.status", customerId: "$fullDocument.customerId" } }], options).on("change", async (change: any) => {
         if (change.operationType !== "update") return
-        if (change.status != "preparing" || change.status != "delivering") return
-
+        if (change.status != "preparing" && change.status != "delivering" && change.status != "delivered") return
+        if (!change.customerId) return
         const message: PushMessageBody = { body: "" }
         if (change.status == "preparing") {
             message.title = "Your order is being prepared"
             message.body = "We will update you shortly after"
         }
         if (change.status == "delivering") {
-            message.title = "Your account is being delivered"
+            message.title = "Your order is being delivered"
             message.body = "The deliverer should contact you soon!"
         }
-
-        //sendNotification(subscription, message)
+        if (change.status == "delivered") {
+            message.title = "Your order is delivered"
+            message.body = "lorem ipsum dolor"
+        }
+        const single = await Customer.findOne({ _id: change.customerId })
+        if (!single || !single.subscription) return
+        sendNotification(single.subscription, message)
     })
 }
