@@ -75,8 +75,9 @@ const autoRouter: {
     _router.post("/:id/subscribe", async (req, res) => {
       const single = await model.findOne({ _id: req.params.id });
       if (!single) return res.sendStatus(404);
-      const { endpoint, ...subscription } = req.body.subscription
-      single.subscription[endpoint] = subscription
+      const { endpoint } = req.body.subscription
+      if (!single.subscriptions) single.subscriptions = {}
+      single.subscriptions[endpoint] = req.body.subscription
       await single.save();
       return res.send(single);
     });
@@ -85,8 +86,9 @@ const autoRouter: {
     _router.post("/:id/unsubscribe", async (req, res) => {
       const single = await model.findOne({ _id: req.params.id });
       if (!single) return res.sendStatus(404);
+
       const { endpoint } = req.body.subscription
-      delete single.subscription[endpoint]
+      single.update(JSON.parse(`{ "$unset": {"$subscriptions.${endpoint}": ""}`))
       await single.save();
       return res.send(single);
     });
