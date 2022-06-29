@@ -12,7 +12,7 @@ describe("Test Order routes", () => {
     customerId: "acab2",
     delivererId: "acab3",
     totalPrice: 25,
-    items: [{ id: "acab5" }],
+    menus: [],
   };
   it("Create an order", () => {
     var config = {
@@ -38,7 +38,7 @@ describe("Test Order routes", () => {
 
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
+      expect(response.data.menus).to.eql(order.menus);
       expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
@@ -58,7 +58,7 @@ describe("Test Order routes", () => {
 
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
+      expect(response.data.menus).to.eql(order.menus);
       expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
@@ -74,7 +74,7 @@ describe("Test Order routes", () => {
 
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
+      expect(response.data.menus).to.eql(order.menus);
       expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
@@ -90,7 +90,7 @@ describe("Test Order routes", () => {
 
     return axios(config).then(function (response) {
       expect(response.data.restaurantId).to.equal(order.restaurantId);
-      expect(response.data.items).to.eql(order.items);
+      expect(response.data.menus).to.eql(order.menus);
       expect(response.data.customerId).to.equal(order.customerId);
       expect(response.data.delivererId).to.equal(order.delivererId);
       expect(response.data.totalPrice).to.equal(order.totalPrice);
