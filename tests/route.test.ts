@@ -1,4 +1,4 @@
-import routes from "../src/routes";
+//import routes from "../src/routes";
 import "mocha";
 
 describe("Test Customer routes", () => {
@@ -6,6 +6,6 @@ describe("Test Customer routes", () => {
     process.env.LISTEN_ADDRESS + ":" + process.env.LISTEN_PORT;
   var userId: Number;
   after(() => {
-    routes.stop();
+    // routes.stop();
   });
 });
