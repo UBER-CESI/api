@@ -17,13 +17,6 @@ mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
 });
 export default mongoose;
 
-interface PushSubscriptions {
-  [endpoint: string]: {
-    expirationTime: number;
-    keys: Record<"p256dh" | "auth", string>
-  }
-}
-
 export const models: {
   model: mongoose.Model<any>;
   capabilities: string[];
