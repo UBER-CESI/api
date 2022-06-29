@@ -1,4 +1,3 @@
-import { Customer, Order } from "../model";
 import webpush, { PushSubscription } from "web-push";
 interface PushMessageBody {
     title?: string
