@@ -9,8 +9,6 @@ import mongoose, {
 } from "mongoose";
 import { PushSubscription } from "web-push";
 
-import { PushSubscription } from "web-push";
-
 if (!process.env.DB_HOST) throw new Error("DB_HOST env arg not specified");
 mongoose.connect(process.env.DB_HOST + "/" + process.env.DB_NAME, {
   user: process.env.DB_USER,
