@@ -110,7 +110,11 @@ const server = app.listen(listen_port, () => {
 
 export default {
   async spawn() {
-    notifications.setup()
+    try {
+      notifications.setup()
+    } catch (error) {
+      console.error(error)
+    }
   },
   stop() {
     server.close();
