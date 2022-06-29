@@ -91,8 +91,9 @@ const autoRouter: {
     _router.post("/:id/unsubscribe", async (req, res) => {
       const single = await model.findOne({ _id: req.params.id });
       if (!single) return res.sendStatus(404);
+
       const { endpoint } = req.body.subscription
-      model.updateOne({ _id: req.params.id }, { $pull: { subscription: {} } })
+      single.update(JSON.parse(`{ "$unset": {"$subscriptions.${endpoint}": ""}`))
       await single.save();
       return res.send(single);
     });
