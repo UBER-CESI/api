@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import { init, models } from "../model";
 import mongoose from "mongoose";
-import * as notifications from "~~/services/notifications";
+import * as notifications from "../services/notifications";
 const listen_port = process.env.LISTEN_PORT;
 const app = express();
 app.use(express.json());
