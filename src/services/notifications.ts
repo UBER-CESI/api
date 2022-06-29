@@ -27,7 +27,8 @@ const options = { fullDocument: "updateLookup" };
 Customer.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: boolean }>([{ $project: { operationType: "$operationType", subscriptions: "$fullDocument.subscriptions", unsuspend: { $in: ["suspendedAt", "$updateDescription.removedFields"] }, suspend: { "$cond": [{ "$ifNull": ["$updateDescription.updatedFields.suspendedAt", null] }, true, false] } } }], options).on("change", (change: any) => {
     if (change.operationType !== "update") return
     if (!change.suspend && !change.unsuspend) return
-    if (!change.subscription) return
+    if (!change.subscriptions || !Object.keys(change.subscriptions).length) return
+    const subs = Object.values(change.subscriptions) as PushSubscription[]
     const message: PushMessageBody = { body: "" }
     if (change.suspend) {
         message.title = "Your account has been suspended!"
@@ -37,7 +38,9 @@ Customer.watch<{ subscriptions: PushSubscription, unsuspend: boolean, suspend: b
         message.title = "Your account is no longer suspended!"
         message.body = "We apologize for the inconvenience"
     }
-    sendNotification(change.subscription, message)
+    subs.forEach(subscription => {
+        sendNotification(subscription, message)
+    })
 })
 
 export function setup() { }
