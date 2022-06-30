@@ -5,9 +5,9 @@ name: CI
 
 on:
   push:
-    branches: ["restaurants", "customers", "orders", "deliverers"]
+    branches: ["restaurants", "customers", "orders", "deliverers","notifications"]
   pull_request:
-    branches: ["restaurants", "customers", "orders", "deliverers"]
+    branches: ["restaurants", "customers", "orders", "deliverers","notifications"]
 
 jobs:
   build:
