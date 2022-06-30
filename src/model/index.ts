@@ -32,7 +32,7 @@ interface ICustomer {
   lastname: string;
   phoneNumber: string;
   suspendedAt?: Date;
-  subscriptions?: PushSubscriptions;
+  subscription?: PushSubscription;
 }
 
 export interface IOrder {
@@ -54,7 +54,7 @@ const usersSchema = new Schema<ICustomer>({
   lastname: String,
   phoneNumber: String,
   suspendedAt: Date,
-  subscriptions: Object,
+  subscription: Object,
 });
 
 
