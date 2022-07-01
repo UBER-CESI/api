@@ -64,7 +64,7 @@ const ordersSchema = new Schema<IOrder>({
   customerId: String,
   delivererId: String,
   totalPrice: Number,
-  items: Array<any>,
+  menus: Array<any>,
   date: Date
 })
 
