@@ -35,6 +35,6 @@ export interface IOrder {
   delivererId: Types.ObjectId;
   totalPrice: Number;
   tipAmount: Number;
-  items: Array<any>;
+  menus: Array<any>;
   date: Date;
 }
